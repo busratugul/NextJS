@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+:root {
+ margin: 0;
+ padding: 0;
+}
+
+a:hover {
+color: rgb(242, 141, 141);
+transition: all 0.3s ease-in-out;
+}
