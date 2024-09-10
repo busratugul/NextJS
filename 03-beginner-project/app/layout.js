@@ -13,3 +13,11 @@ export default function RootLayout({ children }) {
     </html>
   )
 }
+
+export const metadata = {
+  title: {
+    default: 'My Site',
+    template: '%s | My Site', // Sayfalar arasında başlık değiştirme
+  },
+  description: 'This is a global description for my site',
+};
