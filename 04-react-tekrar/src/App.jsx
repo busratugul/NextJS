@@ -19,6 +19,7 @@ function App() {
       <main>
         <PostsList
           isPosting={modalIsVisible}
+          setVisible= {setModalIsVisible}
           hideModal={hideModalHandler}
         />
       </main>
