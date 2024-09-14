@@ -2,31 +2,47 @@ import NewPost from './NewPost'
 import Post from './Post'
 import classes from './PostsList.module.css'
 import Modal from './Modal'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function PostsList({ isPosting, hideModal }) {
+  /* fetch("http://localhost:8080/posts").then(response.json()).then(data => setPost(data.posts)) Bu infinity loop oluşturur.Use effect bu yerde işe yarar. */
   const [posts, setPosts] = useState([])
+  const [isFetching, setIsFetching] = useState(false)
+
+  useEffect(() => {
+    async function fetchPost() {
+      setIsFetching(true)
+      const response = await fetch('http://localhost:8080/posts')
+      const resData = await response.json()
+      if(!response.ok) {
+        console.log("Veri Çekme Başarısız...")
+      }
+      setPosts(resData.posts)
+      setIsFetching(false)
+    }
+    fetchPost()
+  }, [])
 
   function addPostHandler(postData) {
-    fetch("http://localhost:8080/posts",{
-      method: "POST",
+    fetch('http://localhost:8080/posts', {
+      method: 'POST',
       body: JSON.stringify(postData),
       headers: {
-        "Content-Type": "application/json"
-      }
+        'Content-Type': 'application/json',
+      },
     })
     setPosts((prev) => [postData, ...prev])
   }
 
   return (
     <>
-      {isPosting && (
+      {!isFetching && isPosting && (
         <Modal onClose={hideModal}>
           <NewPost onCancel={hideModal} onAddPost={addPostHandler} />
         </Modal>
       )}
 
-      {posts.length === 0 ? (
+      {!isFetching && posts.length === 0 ? (
         <div
           style={{
             textAlign: 'center',
@@ -41,10 +57,20 @@ function PostsList({ isPosting, hideModal }) {
       ) : (
         <ul className={classes.posts}>
           {posts.map((post, index) => (
-            <Post key={index} author={post.author} body={post.author} />
+            <Post key={index} author={post.author} body={post.body} />
           ))}
         </ul>
       )}
+      {isFetching && <div
+          style={{
+            textAlign: 'center',
+            color: 'darkviolet',
+            fontWeight: '600',
+            fontSize: '15px',
+          }}
+        >
+          Loading posts...
+        </div>}
     </>
   )
 }
