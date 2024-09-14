@@ -1,11 +1,27 @@
 import PostsList from './components/PostsList'
-import classes from './App.module.css'
+import MainHeader from './components/MainHeader'
+import { useState } from 'react'
 
 function App() {
+  const [modalIsVisible, setModalIsVisible] = useState(true)
+
+  function hideModalHandler() {
+    setModalIsVisible(false)
+  }
+
+  function showModalHandler() {
+    setModalIsVisible(true)
+  }
+
   return (
     <>
-      <h1 className={classes.header}> My Twitter Pano </h1>
-      <PostsList />
+      <MainHeader createPost={showModalHandler} />
+      <main>
+        <PostsList
+          isPosting={modalIsVisible}
+          hideModal={hideModalHandler}
+        />
+      </main>
     </>
   )
 }

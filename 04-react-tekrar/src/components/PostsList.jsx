@@ -1,41 +1,33 @@
 import NewPost from './NewPost'
 import Post from './Post'
 import classes from './PostsList.module.css'
-import { useState } from 'react'
 import Modal from './Modal'
+import { useState } from 'react'
 
-function PostsList() {
-  const [modalIsVisible, setModalIsVisible] = useState(true)
-  const [enteredBody, setEnteredBody] = useState('')
-  const [enteredAuthor, setEnteredAuthor] = useState('')
+function PostsList({ isPosting, hideModal }) {
+  const [posts, setPosts] = useState([])
 
-  function bodyChangeHandler(event) {
-    setEnteredBody(event.target.value)
-  }
-
-  function authorChangeHandler(event) {
-    setEnteredAuthor(event.target.value)
-  }
-
-  function hideModalHandler() {
-    setModalIsVisible(false)
+  function addPostHandler(postData) {
+    setPosts((prev) => [postData, ...prev])
   }
 
   return (
     <>
-      {modalIsVisible && (
-        <Modal onClose={hideModalHandler}>
-          <NewPost
-            onBodyChange={bodyChangeHandler}
-            onAuthorChange={authorChangeHandler}
-          />
+      {isPosting && (
+        <Modal onClose={hideModal}>
+          <NewPost onCancel={hideModal} onAddPost={addPostHandler} />
         </Modal>
       )}
 
-      <ul className={classes.posts}>
-        <Post author={enteredAuthor} body={enteredBody} />
-        <Post author={enteredAuthor} body={enteredBody} />
-      </ul>
+      {posts.length === 0 ? (
+        <div style={{textAlign:"center", color: "darkviolet", fontWeight:"600", fontSize:"15px"}}>no posts</div>
+      ) : (
+        <ul className={classes.posts}>
+          {posts.map((post, index) => (
+            <Post key={index} author={post.author} body={post.author} />
+          ))}
+        </ul>
+      )}
     </>
   )
 }
