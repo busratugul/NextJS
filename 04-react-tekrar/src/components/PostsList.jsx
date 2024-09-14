@@ -20,7 +20,17 @@ function PostsList({ isPosting, hideModal }) {
       )}
 
       {posts.length === 0 ? (
-        <div style={{textAlign:"center", color: "darkviolet", fontWeight:"600", fontSize:"15px"}}>no posts</div>
+        <div
+          style={{
+            textAlign: 'center',
+            color: 'darkviolet',
+            fontWeight: '600',
+            fontSize: '15px',
+          }}
+        >
+          There are no post yet.
+          <br /> Start adding some!
+        </div>
       ) : (
         <ul className={classes.posts}>
           {posts.map((post, index) => (
