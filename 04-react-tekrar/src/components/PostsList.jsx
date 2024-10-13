@@ -1,16 +1,14 @@
-import NewPost from './NewPost'
+
 import Post from './Post'
 import classes from './PostsList.module.css'
-import Modal from './Modal'
 import { useState, useEffect } from 'react'
 
-function PostsList({ isPosting, hideModal, setVisible }) {
+function PostsList() {
   /* fetch("http://localhost:8080/posts").then(response.json()).then(data => setPost(data.posts)) Bu infinity loop oluşturur.Use effect bu yerde işe yarar. */
   const [posts, setPosts] = useState([])
   const [isFetching, setIsFetching] = useState(false)
 
   useEffect(() => {
-    setVisible(false)
     async function fetchPost() {
       setIsFetching(true)
       const response = await fetch('http://localhost:8080/posts')
@@ -37,12 +35,6 @@ function PostsList({ isPosting, hideModal, setVisible }) {
 
   return (
     <>
-      {!isFetching && isPosting && (
-        <Modal onClose={hideModal}>
-          <NewPost onCancel={hideModal} onAddPost={addPostHandler} />
-        </Modal>
-      )}
-
       {!isFetching && posts.length === 0 ? (
         <div
           style={{
